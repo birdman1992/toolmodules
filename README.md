@@ -1,7 +1,6 @@
-# Birdman的代码模块合集
-- [Birdman的代码模块合集](#Birdman的代码模块合集)
-    - [ChineseLetterHelper](#ChineseLetterHelper)
-
+# Birdman's tool modules
+- [Birdman的代码模块合集](#birdmans-tool-modules)
+    - [汉字转拼音](#chineseletterhelper)
 ## ChineseLetterHelper
 * 功能：获取汉字的拼音，或者拼音首字母
 * 接口：
@@ -21,6 +20,3 @@ qDebug()<<"First letters:"<<ChineseLetterHelper::GetFirstLetters(str);
 qDebug()<<"First letters all:"<<ChineseLetterHelper::GetFirstLettersAll(str);
 qDebug()<<"Pinyin letters:"<<ChineseLetterHelper::GetPinyins(str);
 ```
-
-
-
