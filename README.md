@@ -23,7 +23,7 @@ qDebug()<<"First letters all:"<<ChineseLetterHelper::GetFirstLettersAll(str);
 qDebug()<<"Pinyin letters:"<<ChineseLetterHelper::GetPinyins(str);
 ```
 
-##QDeviceWatcher
+## QDeviceWatcher
 * 功能：实时监视设备的热插拔
 * 接口：
 ```cpp
