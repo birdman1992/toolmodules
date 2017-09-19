@@ -1,7 +1,7 @@
-- [Birdman的代码模块合集](#Birdman的代码模块合集)
-    - [ChineseLetterHelper](#ChineseLetterHelper)
-    - [QDeviceWatcher](#QDeviceWatcher)
 # Birdman's tool modules
+- [Birdman的代码模块合集](#birdmans-tool-modules)
+    - [汉字转拼音](#chineseletterhelper)
+    - [监视设备热插拔](#qdevicewatcher)
 
 ## ChineseLetterHelper
 * 功能：获取汉字的拼音，或者拼音首字母
