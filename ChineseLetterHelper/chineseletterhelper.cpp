@@ -54,7 +54,7 @@ char ChineseLetterHelper::Convert(int n)
     if (In(0xC8F6,0xCBF0,n)) return 'S';
     if (In(0xCBFA,0xCDD9,n)) return 'T';
     if (In(0xCDDA,0xCEF3,n)) return 'W';
-    if (In(0xCEF4,0xD188,n)) return 'X';
+    if (In(0xCEF4,0xD1B8,n)) return 'X';
     if (In(0xD1B9,0xD4D0,n)) return 'Y';
     if (In(0xD4D1,0xD7F9,n)) return 'Z';
     if (In(0x00, 0x7f, n)) return n;

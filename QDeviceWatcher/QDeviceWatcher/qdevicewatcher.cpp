@@ -68,7 +68,6 @@ void QDeviceWatcher::run()
 
 void QDeviceWatcher::netLinkInit()
 {
-    struct sockaddr_nl sa;
     memset(&sa,0,sizeof(sa));
     sa.nl_family=AF_NETLINK;
     sa.nl_groups=NETLINK_KOBJECT_UEVENT;

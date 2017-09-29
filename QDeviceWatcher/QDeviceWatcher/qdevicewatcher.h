@@ -29,6 +29,7 @@ private:
     volatile bool loopFlag;
     char buf[4096];
     int sockfd;
+    struct sockaddr_nl sa;
     struct iovec iov;
     struct msghdr msg;
 
