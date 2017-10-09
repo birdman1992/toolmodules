@@ -40,7 +40,7 @@ qDebug()<<"Pinyin letters:"<<ChineseLetterHelper::GetPinyins(str);
     connect(devWatcher, SIGNAL(deviceRemoved(QString)), this, SLOT(devRemove(QString)));//接收设备移除的信号
 ```
 
-##QTextScroll
+## QTextScroll
 * 功能：继承自QLabel，实现文本的滚动
 * 接口：
 ```cpp
