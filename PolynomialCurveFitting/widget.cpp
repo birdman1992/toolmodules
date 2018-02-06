@@ -26,20 +26,39 @@ void Widget::on_addPoint_clicked()
     if(l.count() != 2)
         return;
     bool ok;
-    QPoint p;
-    p.setX(l.at(0).toInt(&ok));
+    point p;
+    p.x = (l.at(0).toDouble(&ok));
     if(!ok)
         return;
-    p.setY(l.at(1).toInt(&ok));
+    p.y = (l.at(1).toDouble(&ok));
     if(!ok)
         return;
 
-    qDebug()<<"addpoint"<<p;
+    qDebug()<<"addpoint"<<p.x<<p.y;
     paintLab->addPoint(p);
 }
 
 void Widget::on_export_2_clicked()
 {
-    QFile f("pos");
-    f.open(QFile::WriteOnly);
+    paintLab->savePoint("ptList");
+}
+
+void Widget::on_import_2_clicked()
+{
+    paintLab->readPoint("ptList");
+}
+
+void Widget::on_start_clicked(bool checked)
+{
+    doubleVector v = fit.fitStart(paintLab->getPoints());
+    QString str("f(x)=");
+
+    for(unsigned int i=0; i<v.size(); i++)
+    {
+        str.append(QString("%1x^%2+").arg(v[i]).arg(i));
+    }
+    str.chop(1);
+    ui->label->setText(str);
+    paintLab->setFitCoe(v);
+    paintLab->setPaintFx(checked);
 }

@@ -7,7 +7,11 @@
 #include <math.h>
 using namespace std;
 
-struct point;
+struct point
+{
+    double x;
+    double y;
+};
 typedef vector<double> doubleVector;
 
 class PolCurveFit

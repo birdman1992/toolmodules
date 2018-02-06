@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "paintlab.h"
+#include "polcurvefit.h"
 
 namespace Ui {
 class Widget;
@@ -18,10 +19,14 @@ public:
 
 private slots:
     void on_addPoint_clicked();
+    void on_export_2_clicked();
+    void on_import_2_clicked();
+    void on_start_clicked(bool checked);
 
 private:
     Ui::Widget *ui;
     PaintLab* paintLab;
+    PolCurveFit fit;
 };
 
 #endif // WIDGET_H

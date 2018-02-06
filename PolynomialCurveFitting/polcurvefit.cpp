@@ -1,10 +1,5 @@
 #include "polcurvefit.h"
 
-struct point
-{
-    double x;
-    double y;
-};
 vector<point> getFileInf(char *File);  //获取文件数据
 doubleVector getCoeff(vector<point> sample, int n);   //矩阵方程
 

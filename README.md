@@ -3,6 +3,7 @@
     - [汉字转拼音](#chineseletterhelper)
     - [监视设备热插拔](#qdevicewatcher)
     - [Qt滚动文本](#qtextscroll)
+    - [多项式曲线拟合](#polcurvefit)
 
 ## ChineseLetterHelper
 * 功能：获取汉字的拼音，或者拼音首字母
@@ -47,4 +48,11 @@ qDebug()<<"Pinyin letters:"<<ChineseLetterHelper::GetPinyins(str);
     void showScrollText(QString text);//设置滚动文本
     void setTextColor(QString _color);//设置文本颜色
     void setBackColor(QString _color);//设置背景色
+```
+
+##PolCurveFit
+* 功能：实现输入多点坐标拟合出曲线方程
+* 接口：
+```cpp
+    doubleVector fitStart(vector<point> sample);//输入坐标数组，输出系数数组
 ```
