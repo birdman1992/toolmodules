@@ -50,7 +50,7 @@ qDebug()<<"Pinyin letters:"<<ChineseLetterHelper::GetPinyins(str);
     void setBackColor(QString _color);//设置背景色
 ```
 
-##PolCurveFit
+## PolCurveFit
 * 功能：实现输入多点坐标拟合出曲线方程
 * 接口：
 ```cpp
