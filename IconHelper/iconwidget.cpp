@@ -82,7 +82,7 @@ void IconWidget::updateIcon()
     IconHelper::Instance()->SetIcon(ui->target, QChar(iconCode), iconSz);
     int sz = ui->size_tar->text().toInt();
     ui->target2->setIconSize(QSize(sz, sz));
-    ui->target2->setIcon(IconHelper::Instance()->GetIcon(sz, QChar(iconCode), iconSz, ui->color_tar->text(), ui->color_icon->text()));
+    ui->target2->setIcon(IconHelper::Instance()->GetIcon(sz, QChar(iconCode), iconSz, ui->color_icon->text(), ui->color_tar->text()));
 }
 
 void IconWidget::updateStyle()
@@ -108,7 +108,7 @@ void IconWidget::on_get_icon_clicked()
     if(!ok)
         return;
 
-    QIcon icon = IconHelper::Instance()->GetIcon(sz, QChar(iconCode), iconSz, ui->color_tar->text(), ui->color_icon->text());
+    QIcon icon = IconHelper::Instance()->GetIcon(sz, QChar(iconCode), iconSz, ui->color_icon->text(), ui->color_tar->text());
 
     QString outputFile = QFileDialog::getSaveFileName(NULL, "导出", "output.png", ".png");
     if(icon.pixmap(QSize(sz,sz)).save(outputFile, "PNG"))

@@ -37,7 +37,7 @@ void IconHelper::SetIcon(QPushButton *btn, QChar c, int size)
     btn->setText(c);
 }
 
-QIcon IconHelper::GetIcon(int backGroundSize, QChar c, int fontSize, QString backGroundColor, QString color)
+QIcon IconHelper::GetIcon(int backGroundSize, QChar c, int fontSize, QString color, QString backGroundColor)
 {
     QWidget* backBoard = new QWidget;
     QLabel* lab = new QLabel(c, backBoard);
