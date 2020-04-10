@@ -49,7 +49,7 @@ QIcon IconHelper::GetIcon(int backGroundSize, QChar c, int fontSize, QString col
     lab->setAlignment(Qt::AlignCenter);
     lab->resize(backGroundSize, backGroundSize);
     SetIcon(lab, c, fontSize);
-    QIcon ret = QIcon(lab->grab(lab->rect()));
+    QIcon ret = QIcon(QPixmap::grabWidget(lab, lab->rect()));
     backBoard->deleteLater();
     return ret;
 }
