@@ -24,7 +24,8 @@ SOURCES += \
 HEADERS += \
     frmexample.h \
     inputcontex/keyboard.h \
-    inputcontex/myinputpanelcontext.h
+    inputcontex/myinputpanelcontext.h \
+    inputcontex/singleton.h
 
 FORMS += \
     frmexample.ui \

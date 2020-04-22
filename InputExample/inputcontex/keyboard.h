@@ -6,6 +6,7 @@
 #include <QButtonGroup>
 #include <QPainter>
 #include <QTimer>
+#include "singleton.h"
 
 namespace Ui {
 class KeyBoard;
