@@ -5,6 +5,37 @@
 #include <QMutex>
 #include <QMutexLocker>
 
+/*****************************************
+ * 单例模板类，作为基类可以让派生类变成单例
+ * 使用示例：
+ * 非界面类：
+class DerivedSingle:public Singleton<DerivedSingle>
+{
+    friend class Singleton<DerivedSingle>;
+public:
+   DerivedSingle(const DerivedSingle&)=delete;
+   DerivedSingle& operator =(const DerivedSingle&)= delete;
+private:
+   DerivedSingle()=default;
+};
+
+ *界面类：
+class SingleTest : public QWidget,public Singleton<SingleTest>
+{
+    Q_OBJECT
+    friend class Singleton<SingleTest>;
+public:
+
+private:
+    explicit SingleTest(QWidget *parent = nullptr);
+
+signals:
+
+public slots:
+};
+ *
+*****************************************/
+
 template<typename T>
 class Singleton{
 public:

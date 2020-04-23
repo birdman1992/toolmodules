@@ -72,7 +72,7 @@ bool MyInputPanelContext::filterEvent(const QEvent* event)
         inputPanel->show();
         return true;
     } else if (event->type() == QEvent::CloseSoftwareInputPanel) {
-        inputPanel->hide();
+        inputPanel->func_hide();
         return true;
     }
     return false;
