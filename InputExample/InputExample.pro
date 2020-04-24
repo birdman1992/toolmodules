@@ -38,3 +38,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     inputcontex/iconfont/iconfont.qrc
+
+
+include($$PWD/libgooglepinyin/googlepinyin.pri)

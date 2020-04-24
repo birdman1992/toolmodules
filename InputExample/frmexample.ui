@@ -16,10 +16,20 @@
   <widget class="QLineEdit" name="lineEdit">
    <property name="geometry">
     <rect>
-     <x>70</x>
+     <x>0</x>
      <y>110</y>
-     <width>221</width>
+     <width>791</width>
      <height>41</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="textEdit">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>176</y>
+     <width>761</width>
+     <height>221</height>
     </rect>
    </property>
   </widget>
