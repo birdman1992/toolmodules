@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2017-09-19T09:48:36
+# Project created by QtCreator 2017-09-30T09:06:41
 #
 #-------------------------------------------------
 
@@ -8,15 +8,15 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = QDeviceWatcher
+TARGET = QTextScroll
 TEMPLATE = app
 
 
 SOURCES += main.cpp\
         mainwidget.cpp \
-    QDeviceWatcher/qdevicewatcher.cpp
+    QTextScroll/qtextscroll.cpp
 
 HEADERS  += mainwidget.h \
-    QDeviceWatcher/qdevicewatcher.h
+    QTextScroll/qtextscroll.h
 
 FORMS    += mainwidget.ui

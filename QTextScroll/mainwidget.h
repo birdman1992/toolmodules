@@ -2,7 +2,8 @@
 #define MAINWIDGET_H
 
 #include <QWidget>
-#include "QDeviceWatcher/qdevicewatcher.h"
+#include <QPaintEvent>
+#include "QTextScroll/qtextscroll.h"
 
 namespace Ui {
 class MainWidget;
@@ -16,13 +17,18 @@ public:
     explicit MainWidget(QWidget *parent = 0);
     ~MainWidget();
 
+protected:
+    void paintEvent(QPaintEvent *);
+private slots:
+    void on_text_returnPressed();
+
+    void on_foround_returnPressed();
+
+    void on_background_returnPressed();
+
 private:
     Ui::MainWidget *ui;
-    QDeviceWatcher* devWatcher;
-
-private slots:
-    void devAdd(QString devName);
-    void devRemove(QString devName);
+    QTextScroll* textscrol;
 };
 
 #endif // MAINWIDGET_H

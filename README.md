@@ -2,6 +2,8 @@
 - [Birdman的代码模块合集](#birdmans-tool-modules)
     - [汉字转拼音](#chineseletterhelper)
     - [监视设备热插拔](#qdevicewatcher)
+    - [Qt滚动文本](#qtextscroll)
+    - [多项式曲线拟合](#polcurvefit)
 
 ## ChineseLetterHelper
 * 功能：获取汉字的拼音，或者拼音首字母
@@ -37,4 +39,20 @@ qDebug()<<"Pinyin letters:"<<ChineseLetterHelper::GetPinyins(str);
     devWatcher->addDevice("hidraw0");//添加监控设备
     connect(devWatcher, SIGNAL(deviceAdded(QString)), this, SLOT(devAdd(QString)));//接收设备添加的信号
     connect(devWatcher, SIGNAL(deviceRemoved(QString)), this, SLOT(devRemove(QString)));//接收设备移除的信号
+```
+
+## QTextScroll
+* 功能：继承自QLabel，实现文本的滚动
+* 接口：
+```cpp
+    void showScrollText(QString text);//设置滚动文本
+    void setTextColor(QString _color);//设置文本颜色
+    void setBackColor(QString _color);//设置背景色
+```
+
+## PolCurveFit
+* 功能：实现输入多点坐标拟合出曲线方程
+* 接口：
+```cpp
+    doubleVector fitStart(vector<point> sample);//输入坐标数组，输出系数数组
 ```
