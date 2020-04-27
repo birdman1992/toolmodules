@@ -87,7 +87,6 @@ void KeyBoard::init()
 #endif
 
     initIcons();
-    initFuncMap();
     foreach (QPushButton* btn, this->findChildren<QPushButton*>())
     {
         connect(btn, SIGNAL(clicked()), this, SLOT(keyClicked()));
@@ -125,22 +124,22 @@ void KeyBoard::initIcons()
 }
 
 //初始化功能映射，如果按键上的文字或者iconfont被修改了，需要此处修改映射关系
-void KeyBoard::initFuncMap()
-{
-    if(!map_text_func.isEmpty())
-        map_text_func.clear();
+//void KeyBoard::initFuncMap()
+//{
+//    if(!map_text_func.isEmpty())
+//        map_text_func.clear();
 
-    map_text_func.insert("返回", btn_back);
-    map_text_func.insert(QString(QChar(func_caps_lock)), btn_caps_lock);
-    map_text_func.insert("?123", btn_num);
-    map_text_func.insert("英/中", btn_en_cn);
-    map_text_func.insert("中/英", btn_cn_en);
-    map_text_func.insert("空格", btn_space);
-    map_text_func.insert("回车", btn_enter);
-    map_text_func.insert(QString(QChar(func_hide)), btn_hide);
-    map_text_func.insert(QString(QChar(func_back_space)), btn_backspace);
-    map_text_func.insert("更多", btn_more);
-}
+//    map_text_func.insert("返回", btn_back);
+//    map_text_func.insert(QString(QChar(func_caps_lock)), btn_caps_lock);
+//    map_text_func.insert("?123", btn_num);
+//    map_text_func.insert("英/中", btn_en_cn);
+//    map_text_func.insert("中/英", btn_cn_en);
+//    map_text_func.insert("空格", btn_space);
+//    map_text_func.insert("回车", btn_enter);
+//    map_text_func.insert(QString(QChar(func_hide)), btn_hide);
+//    map_text_func.insert(QString(QChar(func_back_space)), btn_backspace);
+//    map_text_func.insert("更多", btn_more);
+//}
 
 void KeyBoard::filterFuncBtns()
 {
@@ -173,6 +172,11 @@ void KeyBoard::setBtnIcon(QPushButton *btn, IconFunc func)
     }
 }
 
+void KeyBoard::outPut(QString outStr)
+{
+    curFocusedLineEdit->insert(outStr);
+}
+
 void KeyBoard::paintEvent(QPaintEvent*)
 {
 //    QStyleOption opt;
@@ -202,13 +206,11 @@ void KeyBoard::saveFocusWidget(QWidget * /*oldFocus*/, QWidget *newFocus)
 
 void KeyBoard::keyClicked()
 {
-    QPushButton* clickedBtn = static_cast<QPushButton*>(QObject::sender());
+    clickedBtn = static_cast<QPushButton*>(QObject::sender());
     qDebug()<<clickedBtn->text();
     if(list_input_btn.contains(clickedBtn))//输入按键
     {
-        curFocusedLineEdit = static_cast<QLineEdit*>(curFocusedWidget);
-        QString text = curFocusedLineEdit->text();
-        curFocusedLineEdit->setText(text.insert(curFocusedLineEdit->cursorPosition(), clickedBtn->text()));
+        outPut(clickedBtn->text());
     }
     else//功能按键
     {
@@ -275,11 +277,13 @@ void KeyBoard::funcNum()
 
 }
 
+//切换成中文模式
 void KeyBoard::funcEnCn()
 {
-
+    map_func_btn
 }
 
+//切换成英文模式
 void KeyBoard::funcCnEn()
 {
 

@@ -23,6 +23,7 @@ class KeyBoard : public QWidget, public Singleton<KeyBoard>
     Q_PROPERTY(QString position READ position WRITE setPosition NOTIFY positionChanged)
     Q_PROPERTY(QString keyFont READ keyFont WRITE setkeyFont)
     Q_PROPERTY(int fontSize READ fontSize WRITE setFontSize)
+    Q_PROPERTY(QString inputMode READ inputMode WRITE setInputMode NOTIFY inputModeChanged)//输入模式, 英文：en|中文：cn
 
     friend class Singleton<KeyBoard>;
 public:
@@ -37,6 +38,11 @@ public:
     int fontSize() const
     {
         return m_fontSize;
+    }
+
+    QString inputMode() const
+    {
+        return m_inputMode;
     }
 
 public slots:
@@ -63,9 +69,20 @@ public slots:
         m_fontSize = fontSize;
     }
 
+    void setInputMode(QString inputMode)
+    {
+        if (m_inputMode == inputMode)
+            return;
+
+        m_inputMode = inputMode;
+        emit inputModeChanged(m_inputMode);
+    }
+
 signals:
 
     void positionChanged(QString position);
+
+    void inputModeChanged(QString inputMode);
 
 private slots:
     void saveFocusWidget(QWidget *, QWidget *newFocus);
@@ -105,9 +122,12 @@ private:
     bool eventFilter(QObject *watched, QEvent *event);
     void init();
     void initIcons();
-    void initFuncMap();
+//    void initFuncMap();
     void filterFuncBtns();
     void setBtnIcon(QPushButton* btn, IconFunc func);
+    void outPut(QString outStr);
+    void outPutEn(QString outStr);
+    void outPutCN(QString outStr);
 
     //funcs
     void funcCapsLock();
@@ -124,12 +144,26 @@ private:
 
     QList<QPushButton*> list_icon_btn;//设置了iconfont的按钮
     QList<QPushButton*> list_input_btn;
-    QMap<QString, BtnFunc> map_text_func;
+    QPushButton* clickedBtn;//被点击的按钮
+
+    const static QMap<QString, BtnFunc> map_text_func = {
+        {"返回", btn_back},
+        {QString(QChar(func_caps_lock)), btn_caps_lock},
+        {"?123", btn_num},
+        {"英/中", btn_en_cn},
+        {"中/英", btn_cn_en},
+        {"空格", btn_space},
+        {"回车", btn_enter},
+        {QString(QChar(func_hide)), btn_hide},
+        {QString(QChar(func_back_space)), btn_backspace},
+        {"更多", btn_more},
+    };
     QMap<IconFunc, QPushButton*> map_func_btn;
 
     QString m_position;
     QString m_keyFont;
     int m_fontSize;
+    QString m_inputMode;
 };
 
 #endif // KEYBOARD_H
