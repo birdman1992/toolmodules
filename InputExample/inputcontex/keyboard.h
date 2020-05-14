@@ -2,6 +2,9 @@
 #define KEYBOARD_H
 
 #include <QWidget>
+#include <QDesktopWidget>
+#include <QCoreApplication>
+#include <QKeyEvent>
 #include <QPaintEvent>
 #include <QPushButton>
 #include <QButtonGroup>
@@ -9,6 +12,9 @@
 #include <QLineEdit>
 #include <QTextEdit>
 #include <QFont>
+#include <QStyle>
+#include <QFile>
+#include <QByteArray>
 
 #include <QTimer>
 #include "singleton.h"
@@ -16,6 +22,21 @@
 namespace Ui {
 class KeyBoard;
 }
+
+enum BtnFunc{
+    func_caps_lock,
+    func_num,
+    func_en_cn,
+    func_cn_en,
+    func_space,
+    func_enter,
+    func_hide,
+    func_backspace,
+    func_more,
+    func_back,
+    func_and,
+};
+
 
 class KeyBoard : public QWidget, public Singleton<KeyBoard>
 {
@@ -28,6 +49,14 @@ class KeyBoard : public QWidget, public Singleton<KeyBoard>
     friend class Singleton<KeyBoard>;
 public:
     ~KeyBoard();
+
+    enum IconFunc{
+        icon_caps_lock = 0xf062,
+        icon_back_space = 0xf177,
+    //        enter = ,
+    //        space,
+        icon_hide = 0xf103,
+    };
 
     QString position() const;
     QString keyFont() const
@@ -93,28 +122,7 @@ private slots:
 private:
     explicit KeyBoard(QWidget *parent = 0);
     QWidget *curFocusedWidget;
-    QLineEdit* curFocusedLineEdit;
-
-    enum IconFunc{
-        func_caps_lock = 0xf062,
-        func_back_space = 0xf177,
-//        enter = ,
-//        space,
-        func_hide = 0xf103,
-    };
-
-    enum BtnFunc{
-        btn_caps_lock,
-        btn_num,
-        btn_en_cn,
-        btn_cn_en,
-        btn_space,
-        btn_enter,
-        btn_hide,
-        btn_backspace,
-        btn_more,
-        btn_back,
-    };
+    QString curFocusedWidgetType;
 
     Ui::KeyBoard *ui;
     void paintEvent(QPaintEvent *);
@@ -122,12 +130,16 @@ private:
     bool eventFilter(QObject *watched, QEvent *event);
     void init();
     void initIcons();
+    void mapReuseBtn(QString btn_text, QString binded_btn_text);
 //    void initFuncMap();
     void filterFuncBtns();
     void setBtnIcon(QPushButton* btn, IconFunc func);
+    void input();
     void outPut(QString outStr);
     void outPutEn(QString outStr);
     void outPutCN(QString outStr);
+    void sendKeyEvent(Qt::Key key);
+    void setKeyboardStyle(QString fileStyle);
 
     //funcs
     void funcCapsLock();
@@ -140,25 +152,15 @@ private:
     void funcBackspace();
     void funcMore();
     void funcBack();
+    void funcAnd();
 
 
     QList<QPushButton*> list_icon_btn;//设置了iconfont的按钮
     QList<QPushButton*> list_input_btn;
     QPushButton* clickedBtn;//被点击的按钮
 
-    const static QMap<QString, BtnFunc> map_text_func = {
-        {"返回", btn_back},
-        {QString(QChar(func_caps_lock)), btn_caps_lock},
-        {"?123", btn_num},
-        {"英/中", btn_en_cn},
-        {"中/英", btn_cn_en},
-        {"空格", btn_space},
-        {"回车", btn_enter},
-        {QString(QChar(func_hide)), btn_hide},
-        {QString(QChar(func_back_space)), btn_backspace},
-        {"更多", btn_more},
-    };
-    QMap<IconFunc, QPushButton*> map_func_btn;
+    const static QMap<QString, BtnFunc> map_text_func;
+    QMap<BtnFunc, QPushButton*> map_func_btn;
 
     QString m_position;
     QString m_keyFont;

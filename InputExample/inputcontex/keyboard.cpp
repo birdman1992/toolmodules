@@ -4,14 +4,38 @@
 
 #include "iconfont/iconhelper.h"
 
+//文字->功能映射，如果按键上的文字或者iconfont被修改了，需要此处修改映射关系
+const QMap<QString, BtnFunc> KeyBoard::map_text_func = {
+    {"返回", func_back},
+    {QString(QChar(KeyBoard::icon_caps_lock)), func_caps_lock},
+    {"?123", func_num},
+    {"英/中", func_en_cn},
+    {"中/英", func_cn_en},
+    {"空格", func_space},
+    {"回车", func_enter},
+    {QString(QChar(KeyBoard::icon_hide)), func_hide},
+    {QString(QChar(KeyBoard::icon_back_space)), func_backspace},
+    {"更多", func_more},
+    {"&&", func_and},
+};
+
+////功能->按钮映射
+//const static QMap<BtnFunc, QPushButton*> map_func_btn = {
+//    {},
+
+//};
+
 KeyBoard::KeyBoard(QWidget *parent) :
     QWidget(parent),curFocusedWidget(0),
     ui(new Ui::KeyBoard)
 {
     ui->setupUi(this);
+    setInputMode("en");
     setFontSize(20);
     setkeyFont("微软雅黑");
     init();
+    qDebug()<<QApplication::applicationDirPath()+ "/style.qss";
+    setKeyboardStyle(QApplication::applicationDirPath()+ "/style.qss");
 }
 
 KeyBoard::~KeyBoard()
@@ -87,10 +111,19 @@ void KeyBoard::init()
 #endif
 
     initIcons();
+    map_func_btn.clear();
+
     foreach (QPushButton* btn, this->findChildren<QPushButton*>())
     {
         connect(btn, SIGNAL(clicked()), this, SLOT(keyClicked()));
+        if(map_text_func.contains(btn->text()))
+        {
+            map_func_btn.insert(map_text_func.value(btn->text()), btn);//初始化文本->按钮映射
+            qDebug()<<btn->text()<<btn;
+        }
     }
+    //初始化复用按钮映射
+    mapReuseBtn("中/英", "英/中");
 
     filterFuncBtns();
 
@@ -105,22 +138,35 @@ void KeyBoard::initIcons()
     if(!list_icon_btn.isEmpty())
     {
 //        qDeleteAll(list_icon_btn);
-        map_func_btn.clear();
+
         list_icon_btn.clear();
     }
-    setBtnIcon(ui->key_37, KeyBoard::func_caps_lock);
+    setBtnIcon(ui->key_37, KeyBoard::icon_caps_lock);
 
-    setBtnIcon(ui->key_43, KeyBoard::func_back_space);
-    setBtnIcon(ui->key_79, KeyBoard::func_back_space);
-    setBtnIcon(ui->key_103, KeyBoard::func_back_space);
+    setBtnIcon(ui->key_43, KeyBoard::icon_back_space);
+    setBtnIcon(ui->key_79, KeyBoard::icon_back_space);
+    setBtnIcon(ui->key_103, KeyBoard::icon_back_space);
 
-    setBtnIcon(ui->key_49, KeyBoard::func_hide);
-    setBtnIcon(ui->key_87, KeyBoard::func_hide);
-    setBtnIcon(ui->key_84, KeyBoard::func_hide);
+    setBtnIcon(ui->key_49, KeyBoard::icon_hide);
+    setBtnIcon(ui->key_87, KeyBoard::icon_hide);
+    setBtnIcon(ui->key_84, KeyBoard::icon_hide);
 
 //    list_icon_btn<<
 
     //    qDebug()<<ui->key_37->text().to.toHex();
+}
+
+
+/*!
+ * \brief KeyBoard::mapReuseBtn
+ * \param btn_text 复用的未被绑定按钮文本
+ * \param binded_btn_text 被复用的已经绑定的按钮文本
+ */
+void KeyBoard::mapReuseBtn(QString btn_text, QString binded_btn_text)
+{
+    BtnFunc func = map_text_func.value(btn_text);
+    BtnFunc func_binded = map_text_func.value(binded_btn_text);
+    map_func_btn.insert(func, map_func_btn.value(func_binded));
 }
 
 //初始化功能映射，如果按键上的文字或者iconfont被修改了，需要此处修改映射关系
@@ -150,7 +196,7 @@ void KeyBoard::filterFuncBtns()
     }
 
     foreach (QPushButton* btn, this->findChildren<QPushButton*>()){
-        if((btn->text().size()==1) && (!list_icon_btn.contains(btn)) || btn->text() == "&&"){
+        if((btn->text().size()==1) && ((!list_icon_btn.contains(btn)) || btn->text() == "&&")){
 //            btn->setStyleSheet("QPushButton{"
 //                               "border:0px silid gray;"
 //                               "color:rgb(255, 255, 255);"
@@ -168,13 +214,57 @@ void KeyBoard::setBtnIcon(QPushButton *btn, IconFunc func)
     if(!list_icon_btn.contains(btn))
     {
         list_icon_btn<<btn;
-        map_func_btn.insert(func, btn);
     }
 }
 
 void KeyBoard::outPut(QString outStr)
 {
-    curFocusedLineEdit->insert(outStr);
+    if(curFocusedWidget->metaObject()->className() == QString("QLineEdit"))
+        static_cast<QLineEdit*>(curFocusedWidget)->insert(outStr);
+}
+
+void KeyBoard::sendKeyEvent(Qt::Key key)
+{
+    qDebug()<<"sendevent:"<<key;
+    QKeyEvent kEvent = QKeyEvent(QEvent::KeyPress, key, Qt::NoModifier, QString());
+    QCoreApplication::sendEvent(curFocusedWidget, &kEvent);
+    kEvent = QKeyEvent(QEvent::KeyRelease, key, Qt::NoModifier, QString());
+    QCoreApplication::sendEvent(curFocusedWidget, &kEvent);
+}
+
+void KeyBoard::setKeyboardStyle(QString fileStyle)
+{
+    QFile f(fileStyle);
+    if(f.open(QFile::ReadWrite))
+    {
+        if(f.size() == 0)
+        {
+            f.write(QByteArray("QWidget{"
+                            "background-color: #233634;"
+                            "}"
+                            "QPushButton{"
+                            "border:1px solid gray;"
+                            "border-radius:6px;"
+                            "color:rgb(255, 255, 255);"
+                            "background-color: #233634;"
+                            "}"
+                            "QPushButton:pressed{"
+                            "color:rgb(255, 255, 255);"
+                            "background-color: rgb(8, 182, 114);"
+                            "margin:10px;"
+                            "}"
+                            "QPushButton:checked{"
+                            "color:#76B5AF;"
+                            "background-color: rgb(36, 221, 149);"
+                            "}"));
+            f.flush();
+            f.seek(0);
+        }
+        QString qss = QString::fromLocal8Bit(f.readAll()).remove("\r\n");
+        qDebug()<<"qss"<<qss;
+        this->setStyleSheet(qss);
+        f.close();
+    }
 }
 
 void KeyBoard::paintEvent(QPaintEvent*)
@@ -188,20 +278,18 @@ void KeyBoard::paintEvent(QPaintEvent*)
 void KeyBoard::saveFocusWidget(QWidget * /*oldFocus*/, QWidget *newFocus)
 {
     if (newFocus != 0 && !this->isAncestorOf(newFocus) && newFocus != curFocusedWidget) {
-        qDebug()<<newFocus->metaObject()->className();
-//        switch (newFocus->metaObject()->className()) {
-//        case "QLineEdit":
-
-//            break;
-//        default:
-//            break;
-//        }
         curFocusedWidget = newFocus;
-        qDebug()<<"keyboard show";
+        curFocusedWidgetType = newFocus->metaObject()->className();
+//        qDebug()<<"keyboard show"<<QApplication::desktop()->availableGeometry();
+
+        QPoint showPos = curFocusedWidget->mapToGlobal(curFocusedWidget->rect().bottomLeft());
+        if(this->geometry().height() + showPos.y() > QApplication::desktop()->availableGeometry().height())
+        {
+            showPos.setY(showPos.y() - curFocusedWidget->geometry().height() - this->geometry().height());
+        }
+        this->move(showPos);
         this->show();
     }
-
-
 }
 
 void KeyBoard::keyClicked()
@@ -226,35 +314,38 @@ void KeyBoard::inputKeyClicked()
 void KeyBoard::funcKeyClicked(QString btnText)
 {
     switch (map_text_func[btnText]) {
-    case btn_caps_lock:
+    case func_caps_lock:
         funcCapsLock();
         break;
-    case btn_num:
+    case func_num:
         funcNum();
         break;
-    case btn_en_cn:
+    case func_en_cn:
         funcEnCn();
         break;
-    case btn_cn_en:
+    case func_cn_en:
         funcCnEn();
         break;
-    case btn_space:
+    case func_space:
         funcSpace();
         break;
-    case btn_enter:
+    case func_enter:
         funcEnter();
         break;
-    case btn_hide:
+    case func_hide:
         funcHide();
         break;
-    case btn_backspace:
+    case func_backspace:
         funcBackspace();
         break;
-    case btn_more:
+    case func_more:
         funcMore();
         break;
-    case btn_back:
+    case func_back:
         funcBack();
+        break;
+    case func_and:
+        funcAnd();
         break;
     default:
         break;
@@ -274,48 +365,55 @@ void KeyBoard::funcCapsLock()
 
 void KeyBoard::funcNum()
 {
-
+    ui->stackedWidget->setCurrentWidget(ui->page_num);
 }
 
 //切换成中文模式
 void KeyBoard::funcEnCn()
 {
-    map_func_btn
+    map_func_btn[func_en_cn]->setText("中/英");
+    setInputMode("cn");
 }
 
 //切换成英文模式
 void KeyBoard::funcCnEn()
 {
-
+    map_func_btn[func_cn_en]->setText("英/中");
+    setInputMode("en");
 }
 
 void KeyBoard::funcSpace()
 {
-
+    outPut(" ");
 }
 
 void KeyBoard::funcEnter()
 {
-
+    sendKeyEvent(Qt::Key_Enter);
 }
 
 void KeyBoard::funcHide()
 {
-
+    this->hide();
 }
 
 void KeyBoard::funcBackspace()
 {
-
+    sendKeyEvent(Qt::Key_Backspace);
 }
 
 void KeyBoard::funcMore()
 {
-
+    ui->stackedWidget->setCurrentWidget(ui->page_more);
 }
 
 void KeyBoard::funcBack()
 {
+    ui->stackedWidget->setCurrentWidget(ui->page_cn_en);
+}
 
+void KeyBoard::funcAnd()
+{
+    outPut("&");
 }
 

@@ -12,7 +12,7 @@ FrmExample::FrmExample(QWidget *parent)
     , ui(new Ui::FrmExample)
 {
     ui->setupUi(this);
-
+#if 0
     googlePinyin = new pinyin_im;
     bool ret = googlePinyin->init(qApp->applicationDirPath() + "/dict");
     if (!ret)
@@ -39,7 +39,7 @@ FrmExample::FrmExample(QWidget *parent)
     }
 
     ui->textEdit->append("xg: " + str_data);
-
+#endif
 }
 
 FrmExample::~FrmExample()
