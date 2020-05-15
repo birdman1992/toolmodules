@@ -4,20 +4,6 @@
 
 #include "iconfont/iconhelper.h"
 
-//文字->功能映射，如果按键上的文字或者iconfont被修改了，需要此处修改映射关系
-const QMap<QString, BtnFunc> KeyBoard::map_text_func = {
-    {"返回", func_back},
-    {QString(QChar(KeyBoard::icon_caps_lock)), func_caps_lock},
-    {"?123", func_num},
-    {"英/中", func_en_cn},
-    {"中/英", func_cn_en},
-    {"空格", func_space},
-    {"回车", func_enter},
-    {QString(QChar(KeyBoard::icon_hide)), func_hide},
-    {QString(QChar(KeyBoard::icon_back_space)), func_backspace},
-    {"更多", func_more},
-    {"&&", func_and},
-};
 
 ////功能->按钮映射
 //const static QMap<BtnFunc, QPushButton*> map_func_btn = {
@@ -110,6 +96,7 @@ void KeyBoard::init()
     setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
 #endif
 
+    initMaps();
     initIcons();
     map_func_btn.clear();
 
@@ -154,6 +141,23 @@ void KeyBoard::initIcons()
 //    list_icon_btn<<
 
     //    qDebug()<<ui->key_37->text().to.toHex();
+}
+
+//文字->功能映射，如果按键上的文字或者iconfont被修改了，需要此处修改映射关系
+void KeyBoard::initMaps()
+{
+    map_text_func.clear();
+    map_text_func.insert("返回", func_back);
+    map_text_func.insert(QString(QChar(KeyBoard::icon_caps_lock)), func_caps_lock);
+    map_text_func.insert("?123", func_num);
+    map_text_func.insert("英/中", func_en_cn);
+    map_text_func.insert("中/英", func_cn_en);
+    map_text_func.insert("空格", func_space);
+    map_text_func.insert("回车", func_enter);
+    map_text_func.insert(QString(QChar(KeyBoard::icon_hide)), func_hide);
+    map_text_func.insert(QString(QChar(KeyBoard::icon_back_space)), func_backspace);
+    map_text_func.insert("更多", func_more);
+    map_text_func.insert("&&", func_and);
 }
 
 
@@ -239,23 +243,23 @@ void KeyBoard::setKeyboardStyle(QString fileStyle)
     {
         if(f.size() == 0)
         {
-            f.write(QByteArray("QWidget{"
-                            "background-color: #233634;"
-                            "}"
-                            "QPushButton{"
-                            "border:1px solid gray;"
-                            "border-radius:6px;"
-                            "color:rgb(255, 255, 255);"
-                            "background-color: #233634;"
-                            "}"
-                            "QPushButton:pressed{"
-                            "color:rgb(255, 255, 255);"
-                            "background-color: rgb(8, 182, 114);"
-                            "margin:10px;"
-                            "}"
-                            "QPushButton:checked{"
-                            "color:#76B5AF;"
-                            "background-color: rgb(36, 221, 149);"
+            f.write(QByteArray("QWidget{\n"
+                            "background-color: #233634;\n"
+                            "}\n"
+                            "QPushButton{\n"
+                            "border:1px solid gray;\n"
+                            "border-radius:6px;\n"
+                            "color:rgb(255, 255, 255);\n"
+                            "background-color: #233634;\n"
+                            "}\n"
+                            "QPushButton:pressed{\n"
+                            "color:rgb(255, 255, 255);\n"
+                            "background-color: #233634;\n"
+                            "margin:3px;\n"
+                            "}\n"
+                            "QPushButton:checked{\n"
+                            "color:#76B5AF;\n"
+                            "background-color: #233634;\n"
                             "}"));
             f.flush();
             f.seek(0);

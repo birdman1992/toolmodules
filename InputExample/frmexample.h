@@ -13,7 +13,7 @@ class FrmExample : public QWidget
     Q_OBJECT
 
 public:
-    FrmExample(QWidget *parent = nullptr);
+    FrmExample(QWidget *parent = 0);
     ~FrmExample();
 
 private:

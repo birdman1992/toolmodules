@@ -130,6 +130,7 @@ private:
     bool eventFilter(QObject *watched, QEvent *event);
     void init();
     void initIcons();
+    void initMaps();
     void mapReuseBtn(QString btn_text, QString binded_btn_text);
 //    void initFuncMap();
     void filterFuncBtns();
@@ -159,7 +160,7 @@ private:
     QList<QPushButton*> list_input_btn;
     QPushButton* clickedBtn;//被点击的按钮
 
-    const static QMap<QString, BtnFunc> map_text_func;
+    QMap<QString, BtnFunc> map_text_func;
     QMap<BtnFunc, QPushButton*> map_func_btn;
 
     QString m_position;
