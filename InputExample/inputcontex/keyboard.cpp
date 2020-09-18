@@ -250,18 +250,18 @@ void KeyBoard::setKeyboardStyle(QString fileStyle)
                             "}"
                             "QPushButton:pressed{"
                             "color:rgb(255, 255, 255);"
-                            "background-color: rgb(8, 182, 114);"
-                            "margin:10px;"
+                            "background-color: #233634;"
+                            "margin:3px;"
                             "}"
                             "QPushButton:checked{"
-                            "color:#76B5AF;"
-                            "background-color: rgb(36, 221, 149);"
+                            "color:#233634;"
+                            "background-color: rgb(255, 255, 255);"
                             "}"));
             f.flush();
             f.seek(0);
         }
         QString qss = QString::fromLocal8Bit(f.readAll()).remove("\r\n");
-        qDebug()<<"qss"<<qss;
+//        qDebug()<<"qss"<<qss;
         this->setStyleSheet(qss);
         f.close();
     }
