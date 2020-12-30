@@ -265,7 +265,7 @@ void KeyBoard::setKeyboardStyle(QString fileStyle)
             f.seek(0);
         }
         QString qss = QString::fromLocal8Bit(f.readAll()).remove("\r\n");
-        qDebug()<<"qss"<<qss;
+//        qDebug()<<"qss"<<qss;
         this->setStyleSheet(qss);
         f.close();
     }
