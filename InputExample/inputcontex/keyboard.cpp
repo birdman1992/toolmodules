@@ -284,15 +284,31 @@ void KeyBoard::saveFocusWidget(QWidget * /*oldFocus*/, QWidget *newFocus)
     if (newFocus != 0 && !this->isAncestorOf(newFocus) && newFocus != curFocusedWidget) {
         curFocusedWidget = newFocus;
         curFocusedWidgetType = newFocus->metaObject()->className();
-//        qDebug()<<"keyboard show"<<QApplication::desktop()->availableGeometry();
+        if(curFocusedWidgetType == "QLineEdit"){        //如果是QLineEdit就显示键盘
+            QPoint showPos = curFocusedWidget->mapToGlobal(curFocusedWidget->rect().bottomLeft());
+            int outpace_y = this->geometry().height() + showPos.y() - QApplication::desktop()->availableGeometry().height();
+            int outpace_x = this->geometry().width() + showPos.x() - QApplication::desktop()->availableGeometry().width();
 
-        QPoint showPos = curFocusedWidget->mapToGlobal(curFocusedWidget->rect().bottomLeft());
-        if(this->geometry().height() + showPos.y() > QApplication::desktop()->availableGeometry().height())
-        {
-            showPos.setY(showPos.y() - curFocusedWidget->geometry().height() - this->geometry().height());
+            if(outpace_y > 0)
+            {
+                showPos.setY(showPos.y() - curFocusedWidget->geometry().height() - this->geometry().height());
+            }
+            if(outpace_x > 0)
+            {
+                showPos.setX(showPos.x() - outpace_x);
+            }
+
+            this->move(showPos);
+            ui->stackedWidget->setCurrentIndex(1);
+            QLineEdit *curLine = qobject_cast<QLineEdit*>(curFocusedWidget);
+            if(curLine->property("inputType").isValid() && curLine->property("inputType").toString() == "letter"){
+                ui->stackedWidget->setCurrentIndex(0);//按照需求显示字母还是数字,0--字母。1--数字
+            }
+            this->show();
         }
-        this->move(showPos);
-        this->show();
+        else{
+            this->hide();
+        }
     }
 }
 
