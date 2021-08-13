@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/sougou">
+        <file>lexicon/sougou.scel</file>
+    </qresource>
+</RCC>

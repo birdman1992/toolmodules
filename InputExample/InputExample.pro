@@ -17,13 +17,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    inputcontex/InputMethod/imsougou.cpp \
+    inputcontex/InputMethod/inputmethod.cpp \
     inputcontex/iconfont/iconhelper.cpp \
     inputcontex/keyboard.cpp \
     main.cpp \
     frmexample.cpp
 
+LIBS += -lws2_32
+
 HEADERS += \
     frmexample.h \
+    inputcontex/InputMethod/imsougou.h \
+    inputcontex/InputMethod/inputmethod.h \
     inputcontex/iconfont/iconhelper.h \
     inputcontex/keyboard.h \
     inputcontex/singleton.h
@@ -38,6 +44,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
+    inputcontex/InputMethod/lexicon.qrc \
     inputcontex/iconfont/iconfont.qrc
 
 

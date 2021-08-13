@@ -3,6 +3,7 @@
 #include <QDebug>
 
 #include "iconfont/iconhelper.h"
+#include "InputMethod/imsougou.h"
 
 
 ////功能->按钮映射
@@ -20,6 +21,8 @@ KeyBoard::KeyBoard(QWidget *parent) :
     setFontSize(20);
     setkeyFont("微软雅黑");
     init();
+    ImSougou* im = new ImSougou(this);
+    im->loadLexicon("C:/Users/Birdman/Documents/mygit/toolmodules/InputExample/inputcontex/InputMethod/lexicon/base.scel");
     qDebug()<<QApplication::applicationDirPath()+ "/style.qss";
     setKeyboardStyle(QApplication::applicationDirPath()+ "/style.qss");
 }
